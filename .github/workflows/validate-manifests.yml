@@ -30,8 +30,10 @@ jobs:
         run: |
           python -m pip install --disable-pip-version-check jsonschema
           python - <<'PY'
+          import hashlib
           import json
           from pathlib import Path
+          from urllib.request import Request, urlopen
           from jsonschema import Draft202012Validator, FormatChecker
 
           schema = json.loads(Path("manifest.schema.json").read_text(encoding="utf-8"))
@@ -47,7 +49,29 @@ jobs:
                   raise SystemExit(f"{filename}: " + "; ".join(error.message for error in errors))
               if manifest.get("applicationId") not in (None, package_id):
                   raise SystemExit(f"{filename}: wrong applicationId")
-              if manifest.get("enabled") is True and manifest["minimumSupportedBuildNumber"] > manifest["buildNumber"]:
-                  raise SystemExit(f"{filename}: minimumSupportedBuildNumber exceeds buildNumber")
+              if manifest.get("enabled") is True:
+                  if manifest["minimumSupportedBuildNumber"] > manifest["buildNumber"]:
+                      raise SystemExit(f"{filename}: minimumSupportedBuildNumber exceeds buildNumber")
+                  request = Request(manifest["downloadUrl"], headers={"User-Agent": "BARBERLY-update-validator"})
+                  digest = hashlib.sha256()
+                  total = 0
+                  first_bytes = b""
+                  with urlopen(request, timeout=60) as response:
+                      if not response.geturl().startswith("https://"):
+                          raise SystemExit(f"{filename}: download redirected away from HTTPS")
+                      while True:
+                          chunk = response.read(1024 * 1024)
+                          if not chunk:
+                              break
+                          if not first_bytes:
+                              first_bytes = chunk[:4]
+                          total += len(chunk)
+                          if total > 180 * 1024 * 1024:
+                              raise SystemExit(f"{filename}: APK exceeds the app's 180 MiB limit")
+                          digest.update(chunk)
+                  if first_bytes != b"PK\\x03\\x04":
+                      raise SystemExit(f"{filename}: download is not a ZIP/APK file")
+                  if digest.hexdigest().lower() != manifest["sha256"].lower():
+                      raise SystemExit(f"{filename}: SHA-256 does not match the downloaded APK")
               print(f"{filename}: valid (enabled={manifest['enabled']})")
           PY
