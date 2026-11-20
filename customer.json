@@ -1,9 +1,10 @@
 {
-  "enabled": false,
+  "enabled": true,
   "applicationId": "com.barberly.barberly_customer",
   "version": "1.1.2",
   "buildNumber": 5,
   "minimumSupportedBuildNumber": 0,
+  "downloadUrl": "https://github.com/boufatis-school-pass/BARBERLY-Updates/releases/download/V1.1.2/barberly-customer.apk",
   "sha256": "c786f4d452222b4b80a6413305a95a5050d555e1aea968391ba7a67131ca2806",
-  "releaseNotes": "BARBERLY Customer 1.1.2 (build 5). Stable update package generated and signature-verified by CI. Public distribution URL is pending."
+  "releaseNotes": "BARBERLY للزبون 1.1.2 (build 5). تحديث مستقر مع تحسينات وإصلاحات."
 }
