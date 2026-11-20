@@ -13,27 +13,31 @@ The applications read these JSON manifests directly from the public raw GitHub U
 - `https://raw.githubusercontent.com/boufatis-school-pass/BARBERLY-Updates/main/barber.json`
 - `https://raw.githubusercontent.com/boufatis-school-pass/BARBERLY-Updates/main/customer.json`
 
-The public manifests are metadata only. Each APK must be hosted as a separate public HTTPS binary with a direct download URL.
+## Published release
 
-## Publishing requirements
+BARBERLY 1.1.2 (build 5) is published in [GitHub Release V1.1.2](https://github.com/boufatis-school-pass/BARBERLY-Updates/releases/tag/V1.1.2).
 
-A manifest may be set to `"enabled": true` only after the corresponding APK is uploaded and verified. An enabled manifest must contain:
+- Barber APK: [barberly-barber.apk](https://github.com/boufatis-school-pass/BARBERLY-Updates/releases/download/V1.1.2/barberly-barber.apk)
+- Customer APK: [barberly-customer.apk](https://github.com/boufatis-school-pass/BARBERLY-Updates/releases/download/V1.1.2/barberly-customer.apk)
 
+Both manifests are enabled and contain the direct HTTPS download URL and SHA-256 digest reported by GitHub for the corresponding uploaded release asset. The updater independently hashes the downloaded APK before opening Android's installer.
+
+## Manifest requirements
+
+An enabled manifest contains:
 - `applicationId`: exact Android package ID.
-- `version` and `buildNumber`: release version and monotonically increasing Android build number.
+- `version` and `buildNumber`: release version and Android build number.
 - `minimumSupportedBuildNumber`: minimum installed build allowed to continue using the app.
 - `downloadUrl`: direct HTTPS APK URL.
 - `sha256`: 64-character SHA-256 checksum of the exact APK bytes.
 - `releaseNotes`: user-facing release notes.
 
-The repository has a GitHub Actions validation workflow. It rejects malformed manifests, wrong package IDs, and a minimum supported build greater than the release build.
+The GitHub Actions validation workflow rejects malformed manifests, wrong package IDs, and a minimum supported build greater than the release build.
 
-## Current status
+## Compatibility
 
-Both manifests are intentionally disabled. No verified public APK binary or direct download URL is published yet, so the app will not offer an unusable update.
-
-The current app updater source has been changed to read these public manifests. Users must install a build containing that updater before it can use this channel. Older installed builds still contain the earlier Firestore-based updater and cannot read these GitHub manifests.
+Only app builds containing the GitHub-manifest updater can use this channel. Older installed builds that still use the earlier Firestore-based updater cannot read these GitHub manifests.
 
 ## Security
 
-Never store signing keys, signing passwords, Firebase service-account files, or access tokens in this public repository. Android update APKs must retain the same package ID and signing certificate as the installed app. Verify the SHA-256 of the uploaded APK after upload; never use a placeholder checksum or URL.
+Never store signing keys, signing passwords, Firebase service-account files, or access tokens in this public repository. Android update APKs must retain the same package ID and signing certificate as the installed app.
