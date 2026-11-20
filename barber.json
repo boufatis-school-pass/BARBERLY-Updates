@@ -1,9 +1,10 @@
 {
-  "enabled": false,
+  "enabled": true,
   "applicationId": "com.barberly.barberly_barber",
   "version": "1.1.2",
   "buildNumber": 5,
   "minimumSupportedBuildNumber": 0,
+  "downloadUrl": "https://github.com/boufatis-school-pass/BARBERLY-Updates/releases/download/V1.1.2/barberly-barber.apk",
   "sha256": "5a49c820ef76296723d7ee14f4766ea39d90c93a210fb594d2b0a86ea1a309fa",
-  "releaseNotes": "BARBERLY 1.1.2 (build 5). Stable update package generated and signature-verified by CI. Public distribution URL is pending."
+  "releaseNotes": "BARBERLY للحلاق 1.1.2 (build 5). تحديث مستقر مع تحسينات وإصلاحات."
 }
