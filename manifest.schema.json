@@ -1,18 +1,11 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/boufatis-school-pass/BARBERLY-Updates/blob/main/manifest.schema.json",
-  "title": "BARBERLY Android update manifest",
+  "title": "BARBERLY Android public update manifest",
   "type": "object",
   "additionalProperties": false,
   "required": [
-    "enabled",
-    "applicationId",
-    "version",
-    "buildNumber",
-    "minimumSupportedBuildNumber",
-    "downloadUrl",
-    "sha256",
-    "releaseNotes"
+    "enabled"
   ],
   "properties": {
     "enabled": {
@@ -50,5 +43,30 @@
       "type": "string",
       "maxLength": 2000
     }
-  }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "enabled": {
+            "const": true
+          }
+        },
+        "required": [
+          "enabled"
+        ]
+      },
+      "then": {
+        "required": [
+          "applicationId",
+          "version",
+          "buildNumber",
+          "minimumSupportedBuildNumber",
+          "downloadUrl",
+          "sha256",
+          "releaseNotes"
+        ]
+      }
+    }
+  ]
 }
