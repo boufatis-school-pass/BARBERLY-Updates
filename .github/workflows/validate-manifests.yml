@@ -69,7 +69,7 @@ jobs:
                           if total > 180 * 1024 * 1024:
                               raise SystemExit(f"{filename}: APK exceeds the app's 180 MiB limit")
                           digest.update(chunk)
-                  if first_bytes != b"PK\\x03\\x04":
+                  if first_bytes != b"PK\x03\x04":
                       raise SystemExit(f"{filename}: download is not a ZIP/APK file")
                   if digest.hexdigest().lower() != manifest["sha256"].lower():
                       raise SystemExit(f"{filename}: SHA-256 does not match the downloaded APK")
