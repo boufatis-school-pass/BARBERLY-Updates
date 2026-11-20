@@ -1,40 +1,39 @@
 # BARBERLY-Updates
 
-Official public update channel for the BARBERLY Android applications.
+Public update metadata channel for the BARBERLY Android applications.
 
-## Applications
+## Application manifests
 
-- Barber: `com.barberly.barberly_barber`
-- Customer: `com.barberly.barberly_customer`
+- Barber: [barber.json](./barber.json) — package `com.barberly.barberly_barber`
+- Customer: [customer.json](./customer.json) — package `com.barberly.barberly_customer`
+- Validation rules: [manifest.schema.json](./manifest.schema.json)
 
-## Release safety requirements
+The applications read these JSON manifests directly from the public raw GitHub URLs:
 
-A release is not considered published until **both** application packages have:
+- `https://raw.githubusercontent.com/boufatis-school-pass/BARBERLY-Updates/main/barber.json`
+- `https://raw.githubusercontent.com/boufatis-school-pass/BARBERLY-Updates/main/customer.json`
 
-1. A publicly reachable HTTPS direct-download URL.
-2. A SHA-256 checksum calculated from the exact APK uploaded to that URL.
-3. A version and Android build number greater than the currently distributed build.
-4. The same trusted production signing certificate as the installed application.
-5. A successful install/update test on a device that already has the previous version installed.
+The public manifests are metadata only. Each APK must be hosted as a separate public HTTPS binary with a direct download URL.
 
-Do not publish placeholder URLs, placeholder checksums, or metadata that advertises a build before its APK is available. Do not put signing keys, passwords, Firebase service-account files, or access tokens in this public repository.
+## Publishing requirements
 
-## Manifest format
+A manifest may be set to `"enabled": true` only after the corresponding APK is uploaded and verified. An enabled manifest must contain:
 
-`manifest.schema.json` describes the public metadata format reserved for this channel. Each app must have its own manifest and APK. Metadata must be enabled only after the corresponding APK has been uploaded and verified.
-
-Fields:
-
-- `enabled`: whether the release is available to clients.
 - `applicationId`: exact Android package ID.
 - `version` and `buildNumber`: release version and monotonically increasing Android build number.
 - `minimumSupportedBuildNumber`: minimum installed build allowed to continue using the app.
 - `downloadUrl`: direct HTTPS APK URL.
-- `sha256`: 64-character SHA-256 checksum of that exact APK.
+- `sha256`: 64-character SHA-256 checksum of the exact APK bytes.
 - `releaseNotes`: user-facing release notes.
 
-## Current channel status
+The repository has a GitHub Actions validation workflow. It rejects malformed manifests, wrong package IDs, and a minimum supported build greater than the release build.
 
-The repository is public and accessible, but no verified APK binaries or live release manifests have been published here yet. The app's current updater still reads the protected Firestore documents `appUpdates/barber` and `appUpdates/customer`; adding files to this repository alone does not change that behavior.
+## Current status
 
-Publishing also requires a safe, authorized binary-upload path and a production signing key that has not been exposed. Until those requirements are met, keep the in-app update channel unpublished rather than offering an unsafe or broken update.
+Both manifests are intentionally disabled. No verified public APK binary or direct download URL is published yet, so the app will not offer an unusable update.
+
+The current app updater source has been changed to read these public manifests. Users must install a build containing that updater before it can use this channel. Older installed builds still contain the earlier Firestore-based updater and cannot read these GitHub manifests.
+
+## Security
+
+Never store signing keys, signing passwords, Firebase service-account files, or access tokens in this public repository. Android update APKs must retain the same package ID and signing certificate as the installed app. Verify the SHA-256 of the uploaded APK after upload; never use a placeholder checksum or URL.
