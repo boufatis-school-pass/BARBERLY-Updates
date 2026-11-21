@@ -1,10 +1,10 @@
 {
   "enabled": true,
   "applicationId": "com.barberly.barberly_customer",
-  "version": "1.1.3",
-  "buildNumber": 6,
+  "version": "1.1.4",
+  "buildNumber": 8,
   "minimumSupportedBuildNumber": 0,
-  "downloadUrl": "https://github.com/boufatis-school-pass/BARBERLY-Updates/releases/download/V1.1.3/barberly-customer.apk",
-  "sha256": "498ff6ac00edecfe11d21951696f632c2defc5b725e4e5ae58430becf38b2913",
-  "releaseNotes": "BARBERLY للزبون 1.1.3 (build 6). تحديث مستقر مع تحسينات وإصلاحات."
+  "downloadUrl": "https://github.com/boufatis-school-pass/BARBERLY-Updates/releases/download/V1.1.4/barberly-customer.apk",
+  "sha256": "e8c46114da84735d938f727ab6cc1984d059973ee7d19d6be2d808157add5769",
+  "releaseNotes": "BARBERLY للزبون 1.1.4 (build 8). تحسينات الواجهة وإصلاحات."
 }
